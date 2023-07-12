@@ -1,0 +1,43 @@
+# jwt.secret.key? ?? 256bit ????? ???.
+jwt:
+  secret:
+    key: TESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTING
+server:
+  address: localhost
+  port: 8080
+#  servlet:
+#    encoding:
+#    force: true #mustache???? ??
+
+spring:
+  redis:
+    host: localhost
+    port: 6379
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jwttest?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=true
+    username: jwttestuser
+    password:
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create-drop
+#                  ddl-auto: update
+      properties:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        hibernate:
+          show_sql: true
+          format_sql: true
+
+  #data.sql이 매번 실행되도록 함
+  sql:
+    init:
+      mode: always
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind.: trace
+
+
