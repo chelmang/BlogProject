@@ -22,7 +22,7 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 #                  ddl-auto: update
       properties:
         dialect: org.hibernate.dialect.MySQL8Dialect

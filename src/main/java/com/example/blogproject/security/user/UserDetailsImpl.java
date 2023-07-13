@@ -36,7 +36,12 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
 //        return null;
     }
-
+    // 권한 확인 메소드 추가
+    public boolean hasRoleAdmin() {
+        return getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(role -> role.equals("ROLE_ADMIN"));
+    }
     @Override
     public String getPassword() {
         return null;

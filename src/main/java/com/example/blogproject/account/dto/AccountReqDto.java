@@ -1,5 +1,6 @@
 package com.example.blogproject.account.dto;
 
+import com.example.blogproject.account.entity.Account;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,12 @@ public class AccountReqDto {
         this.password = pw;
         this.passwordCheck = pwck;
         this.nickname=nickname;
+    }
+
+    public AccountReqDto(Account account) {
+        this.email=account.getEmail();
+        this.nickname=account.getNickname();
+//        this.password=account.getPassword(); 패스워드는 외부로 보내지 않음
     }
 
     public void setEncodePwd(String encodePwd) {

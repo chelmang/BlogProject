@@ -14,9 +14,18 @@ public class Category {
     @Column(name="category_id")
     private Long id;
 
-    private String category_name;
+    private String categoryName;
 
     @ManyToOne
     @JoinColumn(name="blog_id")
     private Blog blog;
+
+    public Category(CategoryDto categoryDto, Blog blog) {
+        this.blog=blog;
+        this.categoryName =categoryDto.getCategoryName();
+    }
+
+    public void update(CategoryDto categoryDto) {
+        this.categoryName=categoryDto.getCategoryName();
+    }
 }

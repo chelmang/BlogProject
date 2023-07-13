@@ -3,8 +3,10 @@ package com.example.blogproject.account.controller;
 import com.example.blogproject.account.dto.AccountReqDto;
 import com.example.blogproject.account.dto.LoginReqDto;
 import com.example.blogproject.account.entity.Account;
+import com.example.blogproject.account.entity.Authority;
 import com.example.blogproject.account.service.AccountService;
 import com.example.blogproject.global.dto.GlobalResDto;
+import com.example.blogproject.security.user.CurrentUser;
 import com.example.blogproject.security.user.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -14,12 +16,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,5 +56,18 @@ public class AccountController {
     public ResponseEntity<Account> getCurrentUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         return ResponseEntity.ok(userDetails.getAccount()); // 로그인되지 않은 경우에 대한 처리
+    }
+
+    @GetMapping("/getAuth")
+    public List<String> getAuth(@CurrentUser UserDetailsImpl userDetails) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            return authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+        }
+
+        return List.of("No authorities found");
     }
 }
