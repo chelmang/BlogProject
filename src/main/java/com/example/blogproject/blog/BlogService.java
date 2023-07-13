@@ -12,6 +12,7 @@ import com.example.blogproject.account.entity.Account;
 import com.example.blogproject.security.user.UserDetailsImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,14 +59,17 @@ public class BlogService {
         return blogDtos;
     }
 
+    private boolean isAdminAndAccount(Blog blog, UserDetailsImpl userDetails) {
+        return blog.getAccount().getId()!=userDetails.getAccount().getId() && !userDetails.hasRoleAdmin();
+    }
+
     public void updateBlog(Long blogId, BlogDto blogDto, UserDetailsImpl userDetails) {
         Blog blog = blogRepository.findById(blogId).orElseThrow(
                 ()-> new RuntimeException("블로그가 존재하지 않음")
         );
         log.info(userDetails.getAuthorities().toString());
         log.info(userDetails.hasRoleAdmin()?"YES":"NO");
-        if(blog.getAccount().getId()!=userDetails.getAccount().getId() && !userDetails.hasRoleAdmin()){
-            //관리자권한도 없고 글 작성자도 아닌경우
+        if(isAdminAndAccount(blog, userDetails)){
             throw new RuntimeException("블로그 작성자가 아님.");
         }
 

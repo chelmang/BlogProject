@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,19 @@ public class AdminController {
     ResponseEntity<List<AccountReqDto>> getAllUsers(){
         List<AccountReqDto> accountDtos = adminService.getAllUsers();
         return ResponseEntity.ok(accountDtos);
+    }
+
+    @GetMapping("/account/{accountId}")
+    @Secured("ROLE_ADMIN")
+    ResponseEntity<AccountReqDto> getAccount(@PathVariable Long accountId){
+        AccountReqDto accountDto = adminService.getAccountDtoByAccountId(accountId);
+        return ResponseEntity.ok(accountDto);
+    }
+
+    @PatchMapping("/account/{accountId}")
+    @Secured("ROLE_ADMIN")
+    ResponseEntity<Void> assignAdminRole(@PathVariable Long accountId){
+        adminService.assignAdminRole(accountId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

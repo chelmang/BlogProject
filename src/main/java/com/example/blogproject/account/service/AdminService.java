@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @RequiredArgsConstructor
@@ -23,5 +24,18 @@ public class AdminService {
             accountDtos.add(new AccountReqDto(account));
         }
         return accountDtos;
+    }
+
+    public AccountReqDto getAccountDtoByAccountId(Long accountId) {
+        Account account = accountRepository.findById(accountId).orElseThrow(
+                ()->new RuntimeException("Invalid accountId: "+accountId)
+        );
+        return new AccountReqDto(account);
+    }
+
+    public void assignAdminRole(Long accountId) {
+        Account account = accountRepository.findById(accountId).orElseThrow(
+                ()->new RuntimeException("Invalid accountId: "+accountId)
+        );
     }
 }
